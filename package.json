@@ -1,0 +1,22 @@
+{
+  "name": "05-project",
+  "version": "1.0.0",
+  "description": "partner lab",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/niesssiobhan/05-project.git"
+  },
+  "keywords": [
+    "bitmap"
+  ],
+  "author": "Siobhan Niess and Jared Pattison",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/niesssiobhan/05-project/issues"
+  },
+  "homepage": "https://github.com/niesssiobhan/05-project#readme"
+}
