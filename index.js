@@ -57,16 +57,34 @@ const transformGreyscale = (bmp) => {
   if(!bmp.colorArray.length) throw 'must pass valid bmp object';
 
   for(let i = 0; i < bmp.colorArray.length; i += 4) {
-    bmp.colorArray[i] = 225;
-    bmp.colorArray[i + 1] = bmp.colorArray[i + 1];
-    bmp.colorArray[i + 2] = bmp.colorArray[i + 2];
-    bmp.colorArray[i + 3] = 0;
+    let color = Math.floor(( bmp.colorArray[i + 1] + bmp.colorArray[i + 2] + bmp.colorArray[i])/3);
+    bmp.colorArray[i] = color;
+    bmp.colorArray[i + 1] = color;
+    bmp.colorArray[i + 2] = color;
+  }
+};
+
+
+const doTheGreyInversion = (bmp) => {
+  if(!bmp.colorArray.length) throw 'must pass valid bmp object';
+
+  for(let i = 0; i < bmp.colorArray.length; i += 4) {
+    let color = Math.floor(( bmp.colorArray[i + 1] + bmp.colorArray[i + 2] + bmp.colorArray[i])/3);
+    bmp.colorArray[i ] = 128 - color;
+    bmp.colorArray[i + 1] = 128 - color;
+    bmp.colorArray[i + 2] = 128 - color;
   }
 };
 
 const doTheInversion = (bmp) => {
-  bmp = {};
+  if(!bmp.colorArray.length) throw 'must pass valid bmp object';
 
+  for(let i = 0; i < bmp.colorArray.length; i += 4) {
+    bmp.colorArray[i ] = 128 - bmp.colorArray[i];
+    bmp.colorArray[i + 1] = 128 - bmp.colorArray[i + 1];
+    bmp.colorArray[i + 2] = 128 - bmp.colorArray[i + 2];
+
+  }
 };
 
 /**
@@ -76,6 +94,7 @@ const doTheInversion = (bmp) => {
 const transforms = {
   greyscale: transformGreyscale,
   invert: doTheInversion,
+  invertgrey: doTheGreyInversion,
 };
 
 // ------------------ GET TO WORK ------------------- //
@@ -100,14 +119,15 @@ function transformWithCallbacks() {
       }
       console.log(`Bitmap Transformed: ${bitmap.newFile}`);
     });
-
   });
 }
 
 // TODO: Explain how this works (in your README)
 // const [file, operation] = process.argv.slice(2);
 const file = './assets/baldy.bmp';
-const operation = 'greyscale';
+const operation = 'invert';
+// const operation = 'invertgrey';
+// const operation = 'greyscale';
 
 
 let bitmap = new Bitmap(file);
