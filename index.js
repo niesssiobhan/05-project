@@ -47,7 +47,7 @@ Bitmap.prototype.transform = function(operation) {
  * Pro Tip: Use "pass by reference" to alter the bitmap's buffer in place so you don't have to pass it around ...
  * @param bmp
  */
-const transformGreyscale = (bmp) => {
+const BlackandWhite = (bmp) => {
 
   console.log('Transforming bitmap into greyscale', bmp);
 
@@ -57,22 +57,22 @@ const transformGreyscale = (bmp) => {
   if(!bmp.colorArray.length) throw 'must pass valid bmp object';
 
   for(let i = 0; i < bmp.colorArray.length; i += 4) {
-    let color = Math.floor(( bmp.colorArray[i + 1] + bmp.colorArray[i + 2] + bmp.colorArray[i])/3);
+    let color = Math.round((bmp.colorArray[i] + bmp.colorArray[i + 1] + bmp.colorArray[i + 2])/3);
+    color = color < 128 ? 0 : 255;
     bmp.colorArray[i] = color;
     bmp.colorArray[i + 1] = color;
     bmp.colorArray[i + 2] = color;
   }
 };
 
-
 const doTheGreyInversion = (bmp) => {
   if(!bmp.colorArray.length) throw 'must pass valid bmp object';
 
   for(let i = 0; i < bmp.colorArray.length; i += 4) {
-    let color = Math.floor(( bmp.colorArray[i + 1] + bmp.colorArray[i + 2] + bmp.colorArray[i])/3);
-    bmp.colorArray[i ] = 128 - color;
-    bmp.colorArray[i + 1] = 128 - color;
-    bmp.colorArray[i + 2] = 128 - color;
+    let color = Math.round((bmp.colorArray[i] + bmp.colorArray[i + 1] + bmp.colorArray[i + 2])/3);
+    bmp.colorArray[i] = color;
+    bmp.colorArray[i + 1] = color;
+    bmp.colorArray[i + 2] = color;
   }
 };
 
@@ -80,26 +80,38 @@ const doTheInversion = (bmp) => {
   if(!bmp.colorArray.length) throw 'must pass valid bmp object';
 
   for(let i = 0; i < bmp.colorArray.length; i += 4) {
-    bmp.colorArray[i ] = 128 - bmp.colorArray[i];
-    bmp.colorArray[i + 1] = 128 - bmp.colorArray[i + 1];
-    bmp.colorArray[i + 2] = 128 - bmp.colorArray[i + 2];
-
+    bmp.colorArray[i] = 255 - bmp.colorArray[i];
+    bmp.colorArray[i + 1] = 255 - bmp.colorArray[i + 1];
+    bmp.colorArray[i + 2] = 255 - bmp.colorArray[i + 2];
   }
 };
+
+const goRandom = (bmp) => {
+  if(!bmp.colorArray.length) throw 'must pass valid bmp object';
+
+const randomColors = (max, min) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+  for(let i = 0; i < bmp.colorArray.length; i += 4) {
+    bmp.colorArray[i] = randomColors(0, 255);
+    bmp.colorArray[i + 1] = randomColors(0, 255);
+    bmp.colorArray[i + 2] = randomColors(0, 255);
+  }
+}
 
 /**
  * A dictionary of transformations
  * Each property represents a transformation that someone could enter on the command line and then a function that would be called on the bitmap to do this job
  */
 const transforms = {
-  greyscale: transformGreyscale,
+  blackandwhite: BlackandWhite,
   invert: doTheInversion,
-  invertgrey: doTheGreyInversion,
+  random: goRandom,
 };
 
 // ------------------ GET TO WORK ------------------- //
 
-function transformWithCallbacks() {
+function transformWithCallbacks(operation) {
 
   fs.readFile(file, (err, buffer) => {
 
@@ -125,11 +137,11 @@ function transformWithCallbacks() {
 // TODO: Explain how this works (in your README)
 // const [file, operation] = process.argv.slice(2);
 const file = './assets/baldy.bmp';
-const operation = 'invert';
-// const operation = 'invertgrey';
-// const operation = 'greyscale';
-
 
 let bitmap = new Bitmap(file);
 
-transformWithCallbacks();
+transformWithCallbacks('invert');
+
+transformWithCallbacks('blackandwhite');
+
+transformWithCallbacks('random');
