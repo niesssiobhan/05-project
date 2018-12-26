@@ -67,6 +67,20 @@ const BlackandWhite = (bmp) => {
   }
 };
 
+const transformGreyscale = (bmp) => {
+
+  console.log('Transforming bitmap into greyscale', bmp);
+
+  if(!bmp.colorArray.length) throw 'must pass valid bmp object';
+
+  for(let i = 0; i < bmp.colorArray.length; i += 4) {
+    let color = Math.floor(( bmp.colorArray[i + 1] + bmp.colorArray[i + 2] + bmp.colorArray[i])/3);
+    bmp.colorArray[i] = color;
+    bmp.colorArray[i + 1] = color;
+    bmp.colorArray[i + 2] = color;
+  }
+};
+
 const transformRedscale = (bmp) => {
 
   console.log('Transforming bitmap into redscale', bmp);
@@ -106,9 +120,9 @@ const doTheGreyInversion = (bmp) => {
 
   for(let i = 0; i < bmp.colorArray.length; i += 4) {
     let color = Math.round((bmp.colorArray[i] + bmp.colorArray[i + 1] + bmp.colorArray[i + 2])/3);
-    bmp.colorArray[i] = color;
-    bmp.colorArray[i + 1] = color;
-    bmp.colorArray[i + 2] = color;
+    bmp.colorArray[i] = 255 - color;
+    bmp.colorArray[i + 1] = 255 - color;
+    bmp.colorArray[i + 2] = 255 - color;
   }
 };
 
@@ -119,13 +133,11 @@ const makeblack = (bmp) => {
   if(!bmp.colorArray.length) throw 'must pass valid bmp object';
 
   for(let i = 0; i < bmp.colorArray.length; i += 1) {
-
     bmp.colorArray[i ] = 0;
-
   }
 };
 
-const inversion = (bmp) => {
+const doTheInversion = (bmp) => {
   if(!bmp.colorArray.length) throw 'must pass valid bmp object';
 
   for(let i = 0; i < bmp.colorArray.length; i += 4) {
@@ -136,13 +148,13 @@ const inversion = (bmp) => {
   }
 };
 
-
+// makelogs is for testing changes to pixel array, currently makes horizontal lines or dots
 const makelogs = (bmp) => {
   for (let i = 0; i < bmp.pixelArray.length; i += 55) {
     // for (let j = 0; j < 10000; j +=  10) {
-      for (let k = 0; k < 4; k ++) {
-        bmp.pixelArray[i  + k] = 0;
-      }
+    for (let k = 0; k < 4; k ++) {
+      bmp.pixelArray[i  + k] = 0;
+    }
     // }
 
     console.log(bmp.pixelArray[i], bmp.pixelArray[i + 1], bmp.pixelArray[i + 2], bmp.pixelArray[i + 3]);
@@ -153,15 +165,16 @@ const makelogs = (bmp) => {
 const goRandom = (bmp) => {
   if(!bmp.colorArray.length) throw 'must pass valid bmp object';
 
-const randomColors = (max, min) => {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+  const randomColors = (max, min) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
+  
   for(let i = 0; i < bmp.colorArray.length; i += 4) {
     bmp.colorArray[i] = randomColors(0, 255);
     bmp.colorArray[i + 1] = randomColors(0, 255);
     bmp.colorArray[i + 2] = randomColors(0, 255);
   }
-}
+};
 
 /**
  * A dictionary of transformations
@@ -174,7 +187,7 @@ const transforms = {
   redshift: transformRedscale,
   blueshift: transformBluescale,
   greenshift: transformGreenscale,
-  logger: makelogs,
+  logger: makelogs,// Currently makes diaganol lines
   blackandwhite: BlackandWhite,
   invert: doTheInversion,
   random: goRandom,
@@ -210,4 +223,4 @@ console.log('process', process.argv);
 
 let bitmap = new Bitmap(file);
 
-transformWithCallbacks();
+transformWithCallbacks(operation);
