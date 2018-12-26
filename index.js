@@ -52,14 +52,15 @@ Bitmap.prototype.transform = function(operation) {
  * @param bmp
  */
 
-const transformGreyscale = (bmp) => {
+const BlackandWhite = (bmp) => {
 
   console.log('Transforming bitmap into greyscale', bmp);
 
   if(!bmp.colorArray.length) throw 'must pass valid bmp object';
 
   for(let i = 0; i < bmp.colorArray.length; i += 4) {
-    let color = Math.floor(( bmp.colorArray[i + 1] + bmp.colorArray[i + 2] + bmp.colorArray[i])/3);
+    let color = Math.round((bmp.colorArray[i] + bmp.colorArray[i + 1] + bmp.colorArray[i + 2])/3);
+    color = color < 128 ? 0 : 255;
     bmp.colorArray[i] = color;
     bmp.colorArray[i + 1] = color;
     bmp.colorArray[i + 2] = color;
@@ -104,10 +105,10 @@ const doTheGreyInversion = (bmp) => {
   if(!bmp.colorArray.length) throw 'must pass valid bmp object';
 
   for(let i = 0; i < bmp.colorArray.length; i += 4) {
-    let color = Math.floor(( bmp.colorArray[i + 1] + bmp.colorArray[i + 2] + bmp.colorArray[i])/3);
-    bmp.colorArray[i ] = 128 - color;
-    bmp.colorArray[i + 1] = 128 - color;
-    bmp.colorArray[i + 2] = 128 - color;
+    let color = Math.round((bmp.colorArray[i] + bmp.colorArray[i + 1] + bmp.colorArray[i + 2])/3);
+    bmp.colorArray[i] = color;
+    bmp.colorArray[i + 1] = color;
+    bmp.colorArray[i + 2] = color;
   }
 };
 
@@ -145,10 +146,22 @@ const makelogs = (bmp) => {
     // }
 
     console.log(bmp.pixelArray[i], bmp.pixelArray[i + 1], bmp.pixelArray[i + 2], bmp.pixelArray[i + 3]);
-   
   }
   console.log(bmp.pixelArray.length);
 };
+
+const goRandom = (bmp) => {
+  if(!bmp.colorArray.length) throw 'must pass valid bmp object';
+
+const randomColors = (max, min) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+  for(let i = 0; i < bmp.colorArray.length; i += 4) {
+    bmp.colorArray[i] = randomColors(0, 255);
+    bmp.colorArray[i + 1] = randomColors(0, 255);
+    bmp.colorArray[i + 2] = randomColors(0, 255);
+  }
+}
 
 /**
  * A dictionary of transformations
@@ -156,18 +169,18 @@ const makelogs = (bmp) => {
  */
 const transforms = {
   greyscale: transformGreyscale,
-  invert: inversion,
   invertgrey: doTheGreyInversion,
   allblack: makeblack,
   redshift: transformRedscale,
   blueshift: transformBluescale,
   greenshift: transformGreenscale,
   logger: makelogs,
+  blackandwhite: BlackandWhite,
+  invert: doTheInversion,
+  random: goRandom,
 };
 
-// ------------------ GET TO WORK ------------------- //
-
-function transformWithCallbacks() {
+function transformWithCallbacks(operation) {
 
   fs.readFile(file, (err, buffer) => {
 
