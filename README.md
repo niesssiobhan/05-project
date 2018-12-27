@@ -1,9 +1,9 @@
 ![CF](http://i.imgur.com/7v5ASc8.png) LAB
 =================================================
 
-## Project Name
+## Bitmap Transformations
 
-### Author: Student/Group Name
+### Authors: Siobhan Niess and Jared Pattison
 
 ### Links and Resources
 * [repo](https://github.com/niesssiobhan/05-project)
@@ -11,31 +11,29 @@
 * [server](https://niess-pattison-05-lab.herokuapp.com/)
 
 ### Modules
-#### `modulename.js`
+#### `index.js`
 ##### Exported Values and Methods
-
-###### `foo(thing) -> string`
-Usage Notes or examples
-
-###### `bar(array) -> array`
-Usage Notes or examples
+* greyscale: transformGreyscale - This transfrom the image to greyscale
+*  invertgrey: doTheGreyInversion -This transforms the image to invertion of grey
+*  allblack: makeblack - This transforms the image to black
+*  redshift: transformRedscale - This transforms the image to a red scale
+*  blueshift: transformBluescale - This transforms the image to a blue scale
+*  greenshift: transformGreenscale - This transforms the image to a green scale
+*  logger: makelogs - This transforms the image to have logs
+*  blackandwhite: BlackandWhite - This transforms the image to black and white
+*  invert: doTheInversion - This transforms the image to invert
+*  random: goRandom - Thi transforms the image into random colors 
 
 ### Setup
 #### `.env` requirements
-* `PORT` - Port Number
-* `MONGODB_URI` - URL to the running mongo instance/db
+* `PORT` - Defined by ENV
 
 #### Running the app
 * `npm start`
-* Endpoint: `/foo/bar/`
-  * Returns a JSON object with abc in it.
-* Endpoint: `/bing/zing/`
-  * Returns a JSON object with xyz in it.
+* Endpoint: `/`
+  * Returns a will save a new bmp file to the assets folder
 
 #### Tests
-* How do you run tests?
-* What assertions were made?
-* What assertions need to be / should be made?
-
-#### UML
-Link to an image of the UML for your application and response to events
+* run: npm test
+* run: npm run linit
+* Then those commands will check if the transformations are correct
