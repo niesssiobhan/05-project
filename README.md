@@ -19,7 +19,7 @@
 *  redshift: transformRedscale - This transforms the image to a red scale
 *  blueshift: transformBluescale - This transforms the image to a blue scale
 *  greenshift: transformGreenscale - This transforms the image to a green scale
-*  logger: makelogs - This transforms the image to have logs
+*  logger: makelogs - This transforms the image to have diagonal lines across it 
 *  blackandwhite: BlackandWhite - This transforms the image to black and white
 *  invert: doTheInversion - This transforms the image to invert
 *  random: goRandom - Thi transforms the image into random colors 
@@ -28,10 +28,16 @@
 #### `.env` requirements
 * `PORT` - Defined by ENV
 
+#### Collaboration
+* Worked together and brainstormed with Brent Woodward, Michael George, Ryan Gallaway, George Raymond
+
 #### Running the app
 * `npm start`
 * Endpoint: `/`
   * Returns a will save a new bmp file to the assets folder
+
+#### Process.argvs
+* Starting off with node which will trigger node to run in the command line which will run the file path and then the following argument will be the specific file you are working with last is the operation that will run for that specific file
 
 #### Tests
 * run: npm test
