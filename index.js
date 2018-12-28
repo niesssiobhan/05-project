@@ -47,8 +47,6 @@ Bitmap.prototype.transform = function(operation) {
 };
 
 /**
- * Sample Transformer (greyscale)
- * Would be called by Bitmap.transform('greyscale')
  * @param bmp
  */
 
@@ -148,14 +146,11 @@ const doTheInversion = (bmp) => {
   }
 };
 
-// makelogs is for testing changes to pixel array, currently makes horizontal lines or dots
 const makelogs = (bmp) => {
   for (let i = 0; i < bmp.pixelArray.length; i += 55) {
-    // for (let j = 0; j < 10000; j +=  10) {
     for (let k = 0; k < 4; k ++) {
       bmp.pixelArray[i  + k] = 0;
     }
-    // }
 
     console.log(bmp.pixelArray[i], bmp.pixelArray[i + 1], bmp.pixelArray[i + 2], bmp.pixelArray[i + 3]);
   }
@@ -177,8 +172,7 @@ const goRandom = (bmp) => {
 };
 
 /**
- * A dictionary of transformations
- * Each property represents a transformation that someone could enter on the command line and then a function that would be called on the bitmap to do this job
+A dictionary of transformations
  */
 const transforms = {
   greyscale: transformGreyscale,
@@ -187,7 +181,7 @@ const transforms = {
   redshift: transformRedscale,
   blueshift: transformBluescale,
   greenshift: transformGreenscale,
-  logger: makelogs,// Currently makes diaganol lines
+  logger: makelogs,
   blackandwhite: BlackandWhite,
   invert: doTheInversion,
   random: goRandom,
@@ -216,7 +210,6 @@ function transformWithCallbacks(operation) {
   });
 }
 
-// TODO: Explain how this works (in your README)
 const [file, operation] = process.argv.slice(2);
 
 console.log('process', process.argv);
