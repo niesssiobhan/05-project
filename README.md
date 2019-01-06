@@ -32,9 +32,8 @@
 * Worked together and brainstormed with Brent Woodward, Michael George, Ryan Gallaway, George Raymond
 
 #### Running the app
-* `npm start`
-* Endpoint: `/`
-  * Returns a will save a new bmp file to the assets folder
+* Open up your terminal and run the ` node index.js ./assets/baldy.bmp <transformer>`
+* This will open up what bmp transformer you have created 
 
 #### Process.argvs
 * Starting off with node which will trigger node to run in the command line which will run the file path and then the following argument will be the specific file you are working with last is the operation that will run for that specific file
