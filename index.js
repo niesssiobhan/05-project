@@ -47,144 +47,19 @@ Bitmap.prototype.transform = function(operation) {
 };
 
 /**
- * @param bmp
- */
-
-const BlackandWhite = (bmp) => {
-
-  console.log('Transforming bitmap into greyscale', bmp);
-
-  if(!bmp.colorArray.length) throw 'must pass valid bmp object';
-
-  for(let i = 0; i < bmp.colorArray.length; i += 4) {
-    let color = Math.round((bmp.colorArray[i] + bmp.colorArray[i + 1] + bmp.colorArray[i + 2])/3);
-    color = color < 128 ? 0 : 255;
-    bmp.colorArray[i] = color;
-    bmp.colorArray[i + 1] = color;
-    bmp.colorArray[i + 2] = color;
-  }
-};
-
-const transformGreyscale = (bmp) => {
-
-  console.log('Transforming bitmap into greyscale', bmp);
-
-  if(!bmp.colorArray.length) throw 'must pass valid bmp object';
-
-  for(let i = 0; i < bmp.colorArray.length; i += 4) {
-    let color = Math.floor(( bmp.colorArray[i + 1] + bmp.colorArray[i + 2] + bmp.colorArray[i])/3);
-    bmp.colorArray[i] = color;
-    bmp.colorArray[i + 1] = color;
-    bmp.colorArray[i + 2] = color;
-  }
-};
-
-const transformRedscale = (bmp) => {
-
-  console.log('Transforming bitmap into redscale', bmp);
-
-  if(!bmp.colorArray.length) throw 'must pass valid bmp object';
-
-  for(let i = 0; i < bmp.colorArray.length; i += 4) {
-    bmp.colorArray[i + 2] = 255;
-  }
-};
-
-const transformGreenscale = (bmp) => {
-
-  console.log('Transforming bitmap into Greenscale', bmp);
-
-  if(!bmp.colorArray.length) throw 'must pass valid bmp object';
-
-  for(let i = 0; i < bmp.colorArray.length; i += 4) {
-    bmp.colorArray[i + 1] = 255;
-  }
-};
-
-const transformBluescale = (bmp) => {
-
-  console.log('Transforming bitmap into Bluescale', bmp);
-
-  if(!bmp.colorArray.length) throw 'must pass valid bmp object';
-
-  for(let i = 0; i < bmp.colorArray.length; i += 4) {
-
-    bmp.colorArray[i] = 255;
-  }
-};
-
-const doTheGreyInversion = (bmp) => {
-  if(!bmp.colorArray.length) throw 'must pass valid bmp object';
-
-  for(let i = 0; i < bmp.colorArray.length; i += 4) {
-    let color = Math.round((bmp.colorArray[i] + bmp.colorArray[i + 1] + bmp.colorArray[i + 2])/3);
-    bmp.colorArray[i] = 255 - color;
-    bmp.colorArray[i + 1] = 255 - color;
-    bmp.colorArray[i + 2] = 255 - color;
-  }
-};
-
-const makeblack = (bmp) => {
-
-  console.log('Paint it Black', bmp);
-
-  if(!bmp.colorArray.length) throw 'must pass valid bmp object';
-
-  for(let i = 0; i < bmp.colorArray.length; i += 1) {
-    bmp.colorArray[i ] = 0;
-  }
-};
-
-const doTheInversion = (bmp) => {
-  if(!bmp.colorArray.length) throw 'must pass valid bmp object';
-
-  for(let i = 0; i < bmp.colorArray.length; i += 4) {
-    bmp.colorArray[i ] = 255 - bmp.colorArray[i];
-    bmp.colorArray[i + 1] = 255 - bmp.colorArray[i + 1];
-    bmp.colorArray[i + 2] = 255 - bmp.colorArray[i + 2];
-
-  }
-};
-
-const makelogs = (bmp) => {
-  for (let i = 0; i < bmp.pixelArray.length; i += 55) {
-    for (let k = 0; k < 4; k ++) {
-      bmp.pixelArray[i  + k] = 0;
-    }
-
-    console.log(bmp.pixelArray[i], bmp.pixelArray[i + 1], bmp.pixelArray[i + 2], bmp.pixelArray[i + 3]);
-  }
-  console.log(bmp.pixelArray.length);
-};
-
-const goRandom = (bmp) => {
-  if(!bmp.colorArray.length) throw 'must pass valid bmp object';
-
-  const randomColors = (max, min) => {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  };
-  
-  for(let i = 0; i < bmp.colorArray.length; i += 4) {
-    bmp.colorArray[i] = randomColors(0, 255);
-    bmp.colorArray[i + 1] = randomColors(0, 255);
-    bmp.colorArray[i + 2] = randomColors(0, 255);
-  }
-};
-
-/**
 A dictionary of transformations
  */
 const transforms = {
-  greyscale: transformGreyscale,
-  invertgrey: doTheGreyInversion,
-  allblack: makeblack,
-  redshift: transformRedscale,
-  blueshift: transformBluescale,
-  greenshift: transformGreenscale,
-  logger: makelogs,
-  blackandwhite: BlackandWhite,
-  invert: doTheInversion,
-  random: goRandom,
+  greyscale: require('./transforms/greyScale.js'),
+  invertgrey: require('./transforms/invertGrey.js'),
+  allblack: require('./transforms/allBlack.js'),
+  redshift: require('./transforms/redShift.js'),
+  blueshift: require('./transforms/blueShift.js'),
+  greenshift: require('./transforms/greenShift.js'),
+  logger: require('./transforms/logger.js'),
+  blackandwhite: require('./transforms/blackAndWhite.js'),
+  invert: require('./transforms/invert.js'),
+  random: require('./transforms/random.js'),
 };
 
 function transformWithCallbacks(operation) {
